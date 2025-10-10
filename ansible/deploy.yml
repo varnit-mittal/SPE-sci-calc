@@ -1,0 +1,52 @@
+---
+- name: Deploy SPE Scientific Calculator locally using Docker Compose
+  hosts: local
+  become: true
+  vars:
+    project_dir: /home/varn03/Desktop/SPE-sci-calc  # <-- change path if needed
+
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker Compose is installed
+      apt:
+        name: docker-compose
+        state: present
+        update_cache: yes
+
+    - name: Pull latest changes (optional, if using git)
+      git:
+        repo: "https://github.com/varnit-mittal/SPE-sci-calc.git"
+        dest: "{{ project_dir }}"
+      when: lookup('file', '{{ project_dir }}/.git', errors='ignore') != ''
+
+    - name: Stop and remove existing containers
+      command: docker-compose -f {{ project_dir }}/docker-compose.yml down --remove-orphans
+      args:
+        chdir: "{{ project_dir }}"
+      ignore_errors: yes  # skip errors if containers don’t exist yet
+
+    - name: Remove dangling Docker images (optional cleanup)
+      command: docker image prune -f
+      ignore_errors: yes
+
+    - name: Build Docker images (fresh build)
+      command: docker-compose -f {{ project_dir }}/docker-compose.yml build --no-cache
+      args:
+        chdir: "{{ project_dir }}"
+
+    - name: Start containers (clean deployment)
+      command: docker-compose -f {{ project_dir }}/docker-compose.yml up -d
+      args:
+        chdir: "{{ project_dir }}"
+
+    - name: Verify containers are running
+      command: docker ps
+      register: docker_ps_output
+
+    - debug:
+        msg: "{{ docker_ps_output.stdout }}"

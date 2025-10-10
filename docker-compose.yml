@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  backend:
+    build: ./scientific-calculator
+    container_name: sci-calc-backend
+    ports:
+      - "8081:8081"
+    networks:
+      - spe-net
+
+  frontend:
+    build: ./frontend
+    container_name: sci-calc-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - spe-net
+
+networks:
+  spe-net:
+    driver: bridge
