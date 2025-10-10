@@ -53,16 +53,16 @@ pipeline {
         }
     }
 
-    // post {
-    //     success {
-    //         mail to: "${MAIL_RECIPIENTS}",
-    //              subject: "✅ Jenkins Pipeline SUCCESS: SPE Scientific Calculator",
-    //              body: "The pipeline executed successfully.\n\n✔ Repo: ${GIT_REPO_URL}\n✔ Image: ${DOCKER_HUB_REPO}\n✔ Deployed successfully on local system."
-    //     }
-    //     failure {
-    //         mail to: "${MAIL_RECIPIENTS}",
-    //              subject: "❌ Jenkins Pipeline FAILURE: SPE Scientific Calculator",
-    //              body: "The pipeline failed.\nPlease check the Jenkins logs for more details.\n\nRepo: ${GIT_REPO_URL}"
-    //     }
-    // }
+    post {
+        success {
+            mail to: "${MAIL_RECIPIENTS}",
+                 subject: "✅ Jenkins Pipeline SUCCESS: SPE Scientific Calculator",
+                 body: "The pipeline executed successfully.\n\n✔ Repo: ${GIT_REPO_URL}\n✔ Image: ${DOCKER_HUB_REPO}\n✔ Deployed successfully on local system."
+        }
+        failure {
+            mail to: "${MAIL_RECIPIENTS}",
+                 subject: "❌ Jenkins Pipeline FAILURE: SPE Scientific Calculator",
+                 body: "The pipeline failed.\nPlease check the Jenkins logs for more details.\n\nRepo: ${GIT_REPO_URL}"
+        }
+    }
 }
