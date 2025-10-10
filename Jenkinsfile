@@ -3,9 +3,8 @@ pipeline {
 
     environment {
         DOCKER_HUB_REPO = 'your-dockerhub-username/spe-sci-calc'
-        PROJECT_DIR = '/home/varn03/Desktop/SPE-sci-calc'
-        ANSIBLE_PLAYBOOK = "${PROJECT_DIR}/ansible/deploy.yml"
-        ANSIBLE_INVENTORY = "${PROJECT_DIR}/ansible/inventory.ini"
+        ANSIBLE_PLAYBOOK = "${WORKSPACE}/ansible/deploy.yml"
+        ANSIBLE_INVENTORY = "${WORKSPACE}/ansible/inventory.ini"
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'   // Jenkins credentials ID
         GIT_REPO_URL = 'https://github.com/varnit-mittal/SPE-sci-calc.git'
         MAIL_RECIPIENTS = 'varnit03mittal@gmail.com'
