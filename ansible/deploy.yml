@@ -39,9 +39,10 @@
       become: true
 
     - name: Verify running containers
-      shell: docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+      shell: docker ps --format "table {{'{{'}}.Names{{'}}'}}\t{{'{{'}}.Status{{'}}'}}\t{{'{{'}}.Ports{{'}}'}}"
       register: docker_ps_output
       ignore_errors: yes
 
-    - debug:
-        msg: "{{ docker_ps_output.stdout }}"
+    - name: Show running containers
+      debug:
+        msg: "{{ docker_ps_output.stdout | default('No output, command failed') }}"
