@@ -34,35 +34,35 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh '''
                             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                            docker-compose push && docker-compose down --rmi all
+                            docker-compose push
                         '''
                     }
                 }
             }
         }
 
-        stage('Deploy with Ansible') {
-            steps {
-                script {
-                    echo 'Deploying using Ansible...'
-                    sh """
-                        ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK}
-                    """
-                }
-            }
-        }
-    }
+    //     stage('Deploy with Ansible') {
+    //         steps {
+    //             script {
+    //                 echo 'Deploying using Ansible...'
+    //                 sh """
+    //                     ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK}
+    //                 """
+    //             }
+    //         }
+    //     }
+    // }
 
-    post {
-        success {
-            mail to: "${MAIL_RECIPIENTS}",
-                 subject: "✅ Jenkins Pipeline SUCCESS: SPE Scientific Calculator",
-                 body: "The pipeline executed successfully.\n\n✔ Repo: ${GIT_REPO_URL}\n✔ Image: ${DOCKER_HUB_REPO}\n✔ Deployed successfully on local system."
-        }
-        failure {
-            mail to: "${MAIL_RECIPIENTS}",
-                 subject: "❌ Jenkins Pipeline FAILURE: SPE Scientific Calculator",
-                 body: "The pipeline failed.\nPlease check the Jenkins logs for more details.\n\nRepo: ${GIT_REPO_URL}"
-        }
-    }
+    // post {
+    //     success {
+    //         mail to: "${MAIL_RECIPIENTS}",
+    //              subject: "✅ Jenkins Pipeline SUCCESS: SPE Scientific Calculator",
+    //              body: "The pipeline executed successfully.\n\n✔ Repo: ${GIT_REPO_URL}\n✔ Image: ${DOCKER_HUB_REPO}\n✔ Deployed successfully on local system."
+    //     }
+    //     failure {
+    //         mail to: "${MAIL_RECIPIENTS}",
+    //              subject: "❌ Jenkins Pipeline FAILURE: SPE Scientific Calculator",
+    //              body: "The pipeline failed.\nPlease check the Jenkins logs for more details.\n\nRepo: ${GIT_REPO_URL}"
+    //     }
+    // }
 }
