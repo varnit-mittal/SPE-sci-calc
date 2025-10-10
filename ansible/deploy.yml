@@ -40,7 +40,7 @@
         chdir: "{{ project_dir }}"
 
     - name: Verify containers are running
-      command: docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+      shell: docker ps --format "table {{{{.Names}}}}\t{{{{.Status}}}}\t{{{{.Ports}}}}"
       register: docker_ps_output
 
     - debug:
