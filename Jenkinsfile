@@ -41,16 +41,16 @@ pipeline {
             }
         }
 
-    //     stage('Deploy with Ansible') {
-    //         steps {
-    //             script {
-    //                 echo 'Deploying using Ansible...'
-    //                 sh """
-    //                     ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK}
-    //                 """
-    //             }
-    //         }
-        // }
+        stage('Deploy with Ansible') {
+            steps {
+                script {
+                    echo 'Deploying using Ansible...'
+                    sh """
+                        ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK}
+                    """
+                }
+            }
+        }
     }
 
     // post {
