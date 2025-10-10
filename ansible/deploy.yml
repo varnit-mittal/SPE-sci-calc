@@ -18,7 +18,7 @@
         state: present
         update_cache: yes
 
-    - name: Pull latest changes (optional, if using git)
+    - name: Pull latest changes 
       git:
         repo: "https://github.com/varnit-mittal/SPE-sci-calc.git"
         dest: "{{ project_dir }}"
@@ -28,18 +28,18 @@
       command: docker-compose -f {{ project_dir }}/docker-compose.yml down --remove-orphans
       args:
         chdir: "{{ project_dir }}"
-      ignore_errors: yes  # skip errors if containers don’t exist yet
+      ignore_errors: yes  # skip errors if containers don't exist yet
 
-    - name: Remove dangling Docker images (optional cleanup)
+    - name: Remove dangling Docker images 
       command: docker image prune -f
       ignore_errors: yes
 
-    - name: Build Docker images (fresh build)
+    - name: Build Docker images 
       command: docker-compose -f {{ project_dir }}/docker-compose.yml build --no-cache
       args:
         chdir: "{{ project_dir }}"
 
-    - name: Start containers (clean deployment)
+    - name: Start containers 
       command: docker-compose -f {{ project_dir }}/docker-compose.yml up -d
       args:
         chdir: "{{ project_dir }}"
