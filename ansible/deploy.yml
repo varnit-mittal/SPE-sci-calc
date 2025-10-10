@@ -1,9 +1,10 @@
 ---
-- name: Deploy SPE Scientific Calculator locally using Docker Compose
+- name: Deploy SPE Scientific Calculator using Docker Compose
   hosts: local
   become: true
   vars:
-    project_dir: /home/varn03/Desktop/SPE-sci-calc  # <-- change path if needed
+    project_dir: /home/varn03/Desktop/SPE-sci-calc  # Path on local or target server
+    compose_file: "{{ project_dir }}/docker-compose.yml"
 
   tasks:
     - name: Ensure Docker is installed
@@ -18,34 +19,28 @@
         state: present
         update_cache: yes
 
-    - name: Pull latest changes 
-      git:
-        repo: "https://github.com/varnit-mittal/SPE-sci-calc.git"
-        dest: "{{ project_dir }}"
-      when: lookup('file', '{{ project_dir }}/.git', errors='ignore') != ''
-
-    - name: Stop and remove existing containers
-      command: docker-compose -f {{ project_dir }}/docker-compose.yml down --remove-orphans
+    - name: Stop and remove existing containers (if any)
+      command: docker-compose -f {{ compose_file }} down --remove-orphans
       args:
         chdir: "{{ project_dir }}"
-      ignore_errors: yes  # skip errors if containers don't exist yet
-
-    - name: Remove dangling Docker images 
-      command: docker image prune -f
       ignore_errors: yes
 
-    - name: Build Docker images 
-      command: docker-compose -f {{ project_dir }}/docker-compose.yml build --no-cache
+    - name: Remove unused Docker networks and images
+      shell: docker system prune -af
+      ignore_errors: yes
+
+    - name: Pull latest images from Docker Hub
+      command: docker-compose -f {{ compose_file }} pull
       args:
         chdir: "{{ project_dir }}"
 
-    - name: Start containers 
-      command: docker-compose -f {{ project_dir }}/docker-compose.yml up -d
+    - name: Start containers using pulled images
+      command: docker-compose -f {{ compose_file }} up -d
       args:
         chdir: "{{ project_dir }}"
 
     - name: Verify containers are running
-      command: docker ps
+      command: docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
       register: docker_ps_output
 
     - debug:
