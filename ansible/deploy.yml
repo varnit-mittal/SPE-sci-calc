@@ -32,6 +32,7 @@
     - name: Deploy and manage containers with Docker Compose
       community.docker.docker_compose:
         project_src: "{{ project_dir }}"
+        project_name: spe_sci_calc
         state: present       # ensures containers are running
         pull: true           # pulls latest images
         restarted: true      # stops and removes old containers before starting new ones
