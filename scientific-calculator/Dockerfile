@@ -6,6 +6,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
+RUN mvn clean test
+
 # Package the app (skip tests for faster build)
 RUN mvn clean package -DskipTests
 
