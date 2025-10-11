@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    sh 'docker-compose build --no-cache'
+                    sh 'docker-compose build'
                 }
             }
         }
