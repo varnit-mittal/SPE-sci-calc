@@ -7,7 +7,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Package the app (skip tests for faster build)
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 # Use lightweight JDK image for runtime
 FROM eclipse-temurin:17-jdk-alpine

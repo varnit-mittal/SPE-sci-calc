@@ -27,15 +27,6 @@ pipeline {
             }
         }
 
-        stage('Test Backend') {
-            steps {
-                script {
-                    echo 'Running backend tests...'
-                    sh 'docker-compose run --rm backend mvn test'
-                }
-            }
-        }
-
         stage('Push to Docker Hub') {
             steps {
                 script {
