@@ -18,20 +18,11 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Image and Run Tests') {
             steps {
                 script {
                     echo 'Building Docker image...'
                     sh 'docker-compose build' 
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                script {
-                    echo 'Running tests...'
-                    echo 'Tests passed successfully.'
                 }
             }
         }
