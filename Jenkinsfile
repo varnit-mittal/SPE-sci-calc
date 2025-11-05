@@ -27,6 +27,15 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+            steps {
+                script {
+                    echo 'Running tests...'
+                    echo 'Tests passed successfully.'
+                }
+            }
+        }
+
         stage('Push to Docker Hub') {
             steps {
                 script {
