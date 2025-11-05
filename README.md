@@ -70,6 +70,3 @@ docker-compose up --build
 ```
 
 ---
-
-# Test
-Adding this line for testing.
